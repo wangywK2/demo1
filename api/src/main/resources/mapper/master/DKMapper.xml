@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tydic.api.dao.master.DKMapper" >
+
+	<select id="jurisdiction" resultType="java.util.HashMap" >
+	  	select '重点区域' lx,ka.name lb,'-' sl,'-' dw,'-' fwms from itms_key_area ka 
+		union all 
+		select '道路交通' lx, ir.dljtlx lb,IFNULL(ir.dljtsl,'0') sl,IFNULL(ir.dljtdw,'无') dw,'-' fwms from itms_road ir 
+		union all 
+		select '公共场所' lx,pp.ggcslx lb,IFNULL(pp.ggcssl,'0') sl,'-' dw,'-' fwms from itms_public_place pp 
+		union all 
+		select '特殊地段' lx,sa.ddmc lb,'-' sl,'-' dw,IFNULL(sa.fwms,'无') fwms from itms_special_area sa order by lx desc 
+  	</select>
+  	<select id="information" resultType="java.util.HashMap" >
+  		select lx , IFNULL(sum(sj0),0) 'sd_0',IFNULL(sum(sj1),0) 'sd_1',IFNULL(sum(sj2),0) 'sd_2',IFNULL(sum(sj3),0) 'sd_3',IFNULL(sum(sj4),0) 'sd_4',IFNULL(sum(sj5),0) 'sd_5',IFNULL(sum(sj6),0) 'sd_6',
+		IFNULL(sum(sj7),0) 'sd_07',IFNULL(sum(t.sj8),0) 'sd_08',IFNULL(sum(sj9),0) 'sd_09',IFNULL(sum(sj10),0) 'sd_10',IFNULL(sum(sj11),0) 'sd_11',IFNULL(sum(sj12),0) 'sd_12',IFNULL(sum(sj13),0) 'sd_13',IFNULL(sum(sj14),0) 'sd_14',
+		IFNULL(sum(sj15),0) 'sd_15',IFNULL(sum(sj16),0) 'sd_16',IFNULL(sum(sj17),0) 'sd_17',IFNULL(sum(sj18),0) 'sd_18',IFNULL(sum(sj19),0) 'sd_19',IFNULL(sum(sj20),0) 'sd_20',IFNULL(sum(sj21),0) 'sd_21',IFNULL(sum(sj22),0) 'sd_22',
+		IFNULL(sum(sj23),0) 'sd_23' from (
+		select ii.lx lx,
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 00:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 00:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 00:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 00:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 0:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 0:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj0',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 01:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 01:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 01:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 01:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 1:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 1:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj1',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 02:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 02:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 02:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 02:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 2:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 2:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj2',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 03:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 03:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 03:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 03:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 3:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 3:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj3',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 04:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 04:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 04:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 04:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 4:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 4:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj4',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 05:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 05:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 05:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 05:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 5:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 5:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj5',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 06:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 06:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 06:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 06:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 6:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 6:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj6',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 07:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 07:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 07:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 07:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 7:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 7:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj7',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 08:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 08:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 08:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 08:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 8:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 8:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj8',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 09:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 09:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 09:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 09:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 9:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 9:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj9',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj10',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj11',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj12',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj13',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj14',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj15',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj16',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj17',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj18',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj19',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj20',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj21',(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj22',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj23' 
+		from itms_intelligence ii , itms_intelligence_time it where ii.uuid=it.zjid ) t group by t.lx
+  	</select>
+  	<select id="policeForce" resultType="java.util.HashMap" >
+	  	select '路面警力' lx,rp.zzjg,rp.lmjl,rp.fj,'-' tbslx,'-' csgwlx,'-' sl,'-' zbfl,'-' zblx from  ITMS_ROAD_POLICE rp
+		union all 
+		select '屯兵所' lx,'-' zzjg,'-' lmjl,'-' fj,ts.tbslx,'-' csgwlx,count(*) sl,'-' zbfl,'-' zblx from  ITMS_TROOPS_STATIONED ts group by ts.tbslx
+		union all 
+		select '常设岗位' lx,'-' zzjg,'-' lmjl,'-' fj,'-' tbslx,csgwlx,IFNULL(pp.sl,0),'-' zbfl,'-' zblx from  ITMS_PERMANENT_POST pp
+		union all 
+		select '装备设备' lx,'-' zzjg,'-' lmjl,'-' fj,'-' tbslx,'-' csgwlx,IFNULL(ie.zbsl,0) sl,ie.zbfl,ie.zblx from ITMS_EQUIPMENT ie
+  	</select>
+  	
+  	<select id="deploy" resultType="java.util.HashMap" >
+	  	select lx , IFNULL(sum(sj0),0) 'sd_0',IFNULL(sum(sj1),0) 'sd_1',IFNULL(sum(sj2),0) 'sd_2',IFNULL(sum(sj3),0) 'sd_3',IFNULL(sum(sj4),0) 'sd_4',IFNULL(sum(sj5),0) 'sd_5',IFNULL(sum(sj6),0) 'sd_6',
+		IFNULL(sum(sj7),0) 'sd_07',IFNULL(sum(t.sj8),0) 'sd_08',IFNULL(sum(sj9),0) 'sd_09',IFNULL(sum(sj10),0) 'sd_10',IFNULL(sum(sj11),0) 'sd_11',IFNULL(sum(sj12),0) 'sd_12',IFNULL(sum(sj13),0) 'sd_13',IFNULL(sum(sj14),0) 'sd_14',
+		IFNULL(sum(sj15),0) 'sd_15',IFNULL(sum(sj16),0) 'sd_16',IFNULL(sum(sj17),0) 'sd_17',IFNULL(sum(sj18),0) 'sd_18',IFNULL(sum(sj19),0) 'sd_19',IFNULL(sum(sj20),0) 'sd_20',IFNULL(sum(sj21),0) 'sd_21',IFNULL(sum(sj22),0) 'sd_22',
+		IFNULL(sum(sj23),0) 'sd_23' from (select id.gwlx lx,
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 00:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 00:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 00:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 00:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 0:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 0:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj0',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 01:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 01:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 01:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 01:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 1:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 1:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj1',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 02:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 02:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 02:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 02:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 2:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 2:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj2',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 03:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 03:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 03:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 03:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 3:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 3:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj3',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 04:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 04:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 04:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 04:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 4:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 4:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj4',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 05:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 05:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 05:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 05:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 5:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 5:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj5',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 06:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 06:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 06:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 06:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 6:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 6:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj6',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 07:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 07:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 07:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 07:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 7:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 7:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj7',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 08:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 08:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 08:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 08:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 8:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 8:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj8',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 09:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 09:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 09:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 09:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 9:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 9:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj9',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 10:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj10',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 11:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj11',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 12:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj12',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 13:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj13',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 14:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj14',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 15:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj15',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 16:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj16',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 17:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj17',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 18:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj18',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 19:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj19',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 20:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj20',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 21:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj21',(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 22:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj22',
+		(case when 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:59','%Y-%m-%d %k:%i')))
+			or 
+			(UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:00','%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:59','%Y-%m-%d %k:%i')))
+			OR
+		  ((UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:00','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))) and 
+				(UNIX_TIMESTAMP(DATE_FORMAT('2019-09-20 23:59','%Y-%m-%d %k:%i')) BETWEEN UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.kssj),'%Y-%m-%d %k:%i')) and UNIX_TIMESTAMP(DATE_FORMAT(CONCAT('2019-09-20 ',it.jssj),'%Y-%m-%d %k:%i'))))
+			then 1 else 0 end
+		) 'sj23'
+		from itms_duty id , ITMS_DUTY_TIME it where id.uuid = it.zbzj ) t group by t.lx
+  	</select>
+</mapper>
